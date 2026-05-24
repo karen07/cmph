@@ -178,10 +178,10 @@ cmph_t *brz_new(cmph_config_t *mph, double c)
             brz->h0 = NULL;
             DEBUGP("%u iterations remaining to create the graphs in a external file\n", iterations);
             if (mph->verbosity) {
-                fprintf(
-                    stderr,
-                    "Failure: A graph with more than 255 keys was created - %u iterations remaining\n",
-                    iterations);
+                fprintf(stderr,
+                        "Failure: A graph with more than 255 keys was created - "
+                        "%u iterations remaining\n",
+                        iterations);
             }
             if (iterations == 0)
                 break;
