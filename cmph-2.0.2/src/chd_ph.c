@@ -239,11 +239,11 @@ cmph_uint8 chd_ph_mapping(cmph_config_t *mph, chd_ph_bucket_t *buckets, chd_ph_i
             map_item->h = hl[2] % (chd_ph->n - 1) + 1;
             map_item->bucket_num = g;
             mph->key_source->dispose(mph->key_source->data, key, keylen);
-            // 			if(buckets[g].size == (chd_ph->keys_per_bucket << 2))
-            // 			{
-            // 				DEBUGP("BUCKET = %u -- SIZE = %u -- MAXIMUM SIZE = %u\n", g, buckets[g].size, (chd_ph->keys_per_bucket << 2));
-            // 				goto error;
-            // 			}
+            //             if(buckets[g].size == (chd_ph->keys_per_bucket << 2))
+            //             {
+            //                 DEBUGP("BUCKET = %u -- SIZE = %u -- MAXIMUM SIZE = %u\n", g, buckets[g].size, (chd_ph->keys_per_bucket << 2));
+            //                 goto error;
+            //             }
             buckets[g].u.size++;
             if (buckets[g].u.size > *max_bucket_size) {
                 *max_bucket_size = buckets[g].u.size;
@@ -288,7 +288,7 @@ chd_ph_sorted_list_t *chd_ph_ordering(chd_ph_bucket_t **_buckets, chd_ph_item_t 
     chd_ph_item_t *input_items = (*_items);
     chd_ph_item_t *output_items;
     register cmph_uint32 i, j, bucket_size, position, position2;
-    // 	cmph_uint32 non_empty_buckets;
+    //     cmph_uint32 non_empty_buckets;
     DEBUGP("MAX BUCKET SIZE = %u\n", max_bucket_size);
     // Determine size of each list of buckets
     for (i = 0; i < nbuckets; i++) {
@@ -307,12 +307,12 @@ chd_ph_sorted_list_t *chd_ph_ordering(chd_ph_bucket_t **_buckets, chd_ph_item_t 
     // Store the buckets in a new array which is sorted by bucket sizes
     output_buckets = (chd_ph_bucket_t *)calloc(
         nbuckets, sizeof(chd_ph_bucket_t)); // everything is initialized with zero
-    //  	non_empty_buckets = nbuckets;
+    //      non_empty_buckets = nbuckets;
 
     for (i = 0; i < nbuckets; i++) {
         bucket_size = input_buckets[i].u.size;
         if (bucket_size == 0) {
-            // 			non_empty_buckets--;
+            //             non_empty_buckets--;
             continue;
         }
         position = sorted_lists[bucket_size].buckets_list + sorted_lists[bucket_size].size;
@@ -320,8 +320,8 @@ chd_ph_sorted_list_t *chd_ph_ordering(chd_ph_bucket_t **_buckets, chd_ph_item_t 
         output_buckets[position].items_list = input_buckets[i].items_list;
         sorted_lists[bucket_size].size++;
     }
-    /*	for(i = non_empty_buckets; i < nbuckets; i++)
-		output_buckets[i].size=0;*/
+    /*    for(i = non_empty_buckets; i < nbuckets; i++)
+        output_buckets[i].size=0;*/
     // Return the buckets sorted in new order and free the old buckets sorted in old order
     free(input_buckets);
     (*_buckets) = output_buckets;
@@ -408,7 +408,7 @@ static inline cmph_uint8 place_bucket_probe(chd_ph_config_data_t *chd_ph, chd_ph
                                   chd_ph->n);
                 UNSETBIT32(((cmph_uint32 *)chd_ph->occup_table), position);
 
-                // 				([position/32]^=(1<<(position%32));
+                //                 ([position/32]^=(1<<(position%32));
                 item++;
                 i--;
             }
@@ -494,9 +494,9 @@ static inline cmph_uint8 place_buckets2(chd_ph_config_data_t *chd_ph, chd_ph_buc
                                        i)) {
                     disp_table[buckets[curr_bucket].u.bucket_id] =
                         probe0_num + probe1_num * chd_ph->n;
-                    // 					DEBUGP("BUCKET %u PLACED --- DISPLACEMENT = %u\n", curr_bucket, disp_table[curr_bucket]);
+                    //                     DEBUGP("BUCKET %u PLACED --- DISPLACEMENT = %u\n", curr_bucket, disp_table[curr_bucket]);
                 } else {
-// 					DEBUGP("BUCKET %u NOT PLACED\n", curr_bucket);
+//                     DEBUGP("BUCKET %u NOT PLACED\n", curr_bucket);
 #ifdef DEBUG
                     items_list =
                         buckets[non_placed_bucket + sorted_lists[i].buckets_list].items_list;
@@ -672,7 +672,7 @@ cmph_t *chd_ph_new(cmph_config_t *mph, double c)
 
     disp_table = (cmph_uint32 *)calloc(chd_ph->nbuckets, sizeof(cmph_uint32));
     //
-    // 	init_genrand(time(0));
+    //     init_genrand(time(0));
 
     while (1) {
         iterations--;

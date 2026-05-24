@@ -805,7 +805,7 @@ cmph_uint32 cmph_packed_size(cmph_t *mphf)
 cmph_uint32 cmph_search_packed(void *packed_mphf, const char *key, cmph_uint32 keylen)
 {
     cmph_uint32 *ptr = (cmph_uint32 *)packed_mphf;
-    //	fprintf(stderr, "algo:%u\n", *ptr);
+    //    fprintf(stderr, "algo:%u\n", *ptr);
     switch (*ptr) {
     case CMPH_CHM:
         return chm_search_packed(++ptr, key, keylen);

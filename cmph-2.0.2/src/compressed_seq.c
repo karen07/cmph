@@ -317,7 +317,7 @@ cmph_uint32 compressed_seq_query_packed(void *cs_packed, cmph_uint32 idx)
     register cmph_uint32 n = *ptr++;
     register cmph_uint32 rem_r = *ptr++;
     ptr++; // skipping total_length
-    // 	register cmph_uint32 total_length = *ptr++;
+    //     register cmph_uint32 total_length = *ptr++;
     register cmph_uint32 buflen_sel = *ptr++;
     register cmph_uint32 *sel_packed = ptr;
     register cmph_uint32 *length_rems = (ptr += (buflen_sel >> 2));

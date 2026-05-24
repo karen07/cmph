@@ -329,7 +329,7 @@ cmph_t *bdz_ph_new(cmph_config_t *mph, double c)
     }
 
     if (iterations == 0) {
-        //		free(bdz_ph->g);
+        //        free(bdz_ph->g);
         bdz_ph_free_queue(&edges);
         bdz_ph_free_graph3(&graph3);
         return NULL;

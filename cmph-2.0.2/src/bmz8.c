@@ -436,7 +436,7 @@ static int bmz8_gen_edges(cmph_config_t *mph)
         char *key = NULL;
         mph->key_source->read(mph->key_source->data, &key, &keylen);
 
-        //		if (key == NULL)fprintf(stderr, "key = %s -- read BMZ\n", key);
+        //        if (key == NULL)fprintf(stderr, "key = %s -- read BMZ\n", key);
         h1 = (cmph_uint8)(hash(bmz8->hashes[0], key, keylen) % bmz8->n);
         h2 = (cmph_uint8)(hash(bmz8->hashes[1], key, keylen) % bmz8->n);
         if (h1 == h2)
@@ -450,7 +450,7 @@ static int bmz8_gen_edges(cmph_config_t *mph)
         }
         //DEBUGP("Adding edge: %u -> %u for key %s\n", h1, h2, key);
         mph->key_source->dispose(mph->key_source->data, key, keylen);
-        //		fprintf(stderr, "key = %s -- dispose BMZ\n", key);
+        //        fprintf(stderr, "key = %s -- dispose BMZ\n", key);
         multiple_edges = graph_contains_edge(bmz8->graph, h1, h2);
         if (mph->verbosity && multiple_edges)
             fprintf(stderr, "A non simple graph was generated\n");
@@ -489,11 +489,11 @@ int bmz8_dump(cmph_t *mphf, FILE *fd)
     nbytes = fwrite(&(data->m), sizeof(cmph_uint8), (size_t)1, fd);
 
     nbytes = fwrite(data->g, sizeof(cmph_uint8) * (data->n), (size_t)1, fd);
-    /*	#ifdef DEBUG
-	fprintf(stderr, "G: ");
-	for (i = 0; i < data->n; ++i) fprintf(stderr, "%u ", data->g[i]);
-	fprintf(stderr, "\n");
-	#endif*/
+    /*    #ifdef DEBUG
+    fprintf(stderr, "G: ");
+    for (i = 0; i < data->n; ++i) fprintf(stderr, "%u ", data->g[i]);
+    fprintf(stderr, "\n");
+    #endif*/
     return 1;
 }
 
