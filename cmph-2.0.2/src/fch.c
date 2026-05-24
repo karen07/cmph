@@ -10,7 +10,7 @@
 #include <assert.h>
 #include <string.h>
 #define INDEX 0 /* alignment index within a bucket */
-//#define DEBUG
+// #define DEBUG
 #include "debug.h"
 
 static fch_buckets_t *mapping(cmph_config_t *mph);
@@ -41,7 +41,7 @@ fch_config_data_t *fch_config_new(void)
 void fch_config_destroy(cmph_config_t *mph)
 {
     fch_config_data_t *data = (fch_config_data_t *)mph->data;
-    //DEBUGP("Destroying algorithm dependent data\n");
+    // DEBUGP("Destroying algorithm dependent data\n");
     free(data);
 }
 
@@ -52,7 +52,7 @@ void fch_config_set_hashfuncs(cmph_config_t *mph, CMPH_HASH *hashfuncs)
     cmph_uint32 i = 0;
     while (*hashptr != CMPH_HASH_COUNT) {
         if (i >= 2)
-            break; //fch only uses two hash functions
+            break; // fch only uses two hash functions
         fch->hashfuncs[i] = *hashptr;
         ++i, ++hashptr;
     }
@@ -97,7 +97,7 @@ static fch_buckets_t *mapping(cmph_config_t *mph)
     fch->b = fch_calc_b(fch->c, fch->m);
     fch->p1 = fch_calc_p1(fch->m);
     fch->p2 = fch_calc_p2(fch->b);
-    //DEBUGP("b:%u   p1:%f   p2:%f\n", fch->b, fch->p1, fch->p2);
+    // DEBUGP("b:%u   p1:%f   p2:%f\n", fch->b, fch->p1, fch->p2);
     buckets = fch_buckets_new(fch->b);
 
     mph->key_source->rewind(mph->key_source->data);
@@ -123,14 +123,14 @@ static cmph_uint32 *ordering(fch_buckets_t *buckets)
 static cmph_uint8 check_for_collisions_h2(fch_config_data_t *fch, fch_buckets_t *buckets,
                                           cmph_uint32 *sorted_indexes)
 {
-    //cmph_uint32 max_size = fch_buckets_get_max_size(buckets);
+    // cmph_uint32 max_size = fch_buckets_get_max_size(buckets);
     cmph_uint8 *hashtable = (cmph_uint8 *)calloc((size_t)fch->m, sizeof(cmph_uint8));
     cmph_uint32 nbuckets = fch_buckets_get_nbuckets(buckets);
     cmph_uint32 i = 0, index = 0, j = 0;
     for (i = 0; i < nbuckets; i++) {
         cmph_uint32 nkeys = fch_buckets_get_size(buckets, sorted_indexes[i]);
         memset(hashtable, 0, (size_t)fch->m);
-        //DEBUGP("bucket %u -- nkeys: %u\n", i, nkeys);
+        // DEBUGP("bucket %u -- nkeys: %u\n", i, nkeys);
         for (j = 0; j < nkeys; j++) {
             char *key = fch_buckets_get_key(buckets, sorted_indexes[i], j);
             cmph_uint32 keylen = fch_buckets_get_keylength(buckets, sorted_indexes[i], j);
@@ -171,7 +171,7 @@ static cmph_uint8 searching(fch_config_data_t *fch, fch_buckets_t *buckets,
         free(fch->g);
     fch->g = (cmph_uint32 *)calloc((size_t)fch->b, sizeof(cmph_uint32));
 
-    //DEBUGP("max bucket size: %u\n", fch_buckets_get_max_size(buckets));
+    // DEBUGP("max bucket size: %u\n", fch_buckets_get_max_size(buckets));
 
     for (i = 0; i < fch->m; i++) {
         random_table[i] = i;
@@ -189,10 +189,10 @@ static cmph_uint8 searching(fch_config_data_t *fch, fch_buckets_t *buckets,
         if (!restart) {
             searching_iterations++;
             iteration_to_generate_h2 = 0;
-            //DEBUGP("searching_iterations: %u\n", searching_iterations);
+            // DEBUGP("searching_iterations: %u\n", searching_iterations);
         } else {
             iteration_to_generate_h2++;
-            //DEBUGP("iteration_to_generate_h2: %u\n", iteration_to_generate_h2);
+            // DEBUGP("iteration_to_generate_h2: %u\n", iteration_to_generate_h2);
         }
         for (i = 0; (i < nbuckets) && !restart; i++) {
             cmph_uint32 bucketsize = fch_buckets_get_size(buckets, sorted_indexes[i]);
@@ -208,7 +208,7 @@ static cmph_uint8 searching(fch_config_data_t *fch, fch_buckets_t *buckets,
                 counter = 0;
                 restart = 0; // false
                 fch->g[sorted_indexes[i]] = (fch->m + random_table[filled_count + z] - h2) % fch->m;
-                //DEBUGP("g[%u]: %u\n", sorted_indexes[i], fch->g[sorted_indexes[i]]);
+                // DEBUGP("g[%u]: %u\n", sorted_indexes[i], fch->g[sorted_indexes[i]]);
                 j = INDEX;
                 do {
                     cmph_uint32 index = 0;
@@ -216,7 +216,8 @@ static cmph_uint8 searching(fch_config_data_t *fch, fch_buckets_t *buckets,
                     keylen = fch_buckets_get_keylength(buckets, sorted_indexes[i], j);
                     h2 = hash(fch->h2, key, keylen) % fch->m;
                     index = (h2 + fch->g[sorted_indexes[i]]) % fch->m;
-                    //DEBUGP("key:%s  keylen:%u  index: %u  h2:%u  bucketsize:%u\n", key, keylen, index, h2, bucketsize);
+                    // DEBUGP("key:%s  keylen:%u  index: %u  h2:%u  bucketsize:%u\n", key, keylen,
+                    // index, h2, bucketsize);
                     if (map_table[index] >= filled_count) {
                         cmph_uint32 y = map_table[index];
                         cmph_uint32 ry = random_table[y];
@@ -235,7 +236,7 @@ static cmph_uint8 searching(fch_config_data_t *fch, fch_buckets_t *buckets,
                     j = (j + 1) % bucketsize;
                 } while (j % bucketsize != INDEX);
             }
-            //getchar();
+            // getchar();
         }
     } while (restart && (searching_iterations < 10) && (iteration_to_generate_h2 < 1000));
     free(map_table);
@@ -253,11 +254,11 @@ cmph_t *fch_new(cmph_config_t *mph, double c)
     cmph_uint32 *sorted_indexes = NULL;
     fch_config_data_t *fch = (fch_config_data_t *)mph->data;
     fch->m = mph->key_source->nkeys;
-    //DEBUGP("m: %f\n", fch->m);
+    // DEBUGP("m: %f\n", fch->m);
     if (c <= 2)
         c = 2.6; // validating restrictions over parameter c.
     fch->c = c;
-    //DEBUGP("c: %f\n", fch->c);
+    // DEBUGP("c: %f\n", fch->c);
     fch->h1 = NULL;
     fch->h2 = NULL;
     fch->g = NULL;
@@ -291,11 +292,11 @@ cmph_t *fch_new(cmph_config_t *mph, double c)
     mphf->algo = mph->algo;
     fchf = (fch_data_t *)malloc(sizeof(fch_data_t));
     fchf->g = fch->g;
-    fch->g = NULL; //transfer memory ownership
+    fch->g = NULL; // transfer memory ownership
     fchf->h1 = fch->h1;
-    fch->h1 = NULL; //transfer memory ownership
+    fch->h1 = NULL; // transfer memory ownership
     fchf->h2 = fch->h2;
-    fch->h2 = NULL; //transfer memory ownership
+    fch->h2 = NULL; // transfer memory ownership
     fchf->p2 = fch->p2;
     fchf->p1 = fch->p1;
     fchf->b = fch->b;
@@ -303,7 +304,7 @@ cmph_t *fch_new(cmph_config_t *mph, double c)
     fchf->m = fch->m;
     mphf->data = fchf;
     mphf->size = fch->m;
-    //DEBUGP("Successfully generated minimal perfect hash\n");
+    // DEBUGP("Successfully generated minimal perfect hash\n");
     if (mph->verbosity) {
         fprintf(stderr, "Successfully generated minimal perfect hash function\n");
     }
@@ -321,13 +322,13 @@ int fch_dump(cmph_t *mphf, FILE *fd)
     __cmph_dump(mphf, fd);
 
     hash_state_dump(data->h1, &buf, &buflen);
-    //DEBUGP("Dumping hash state with %u bytes to disk\n", buflen);
+    // DEBUGP("Dumping hash state with %u bytes to disk\n", buflen);
     nbytes = fwrite(&buflen, sizeof(cmph_uint32), (size_t)1, fd);
     nbytes = fwrite(buf, (size_t)buflen, (size_t)1, fd);
     free(buf);
 
     hash_state_dump(data->h2, &buf, &buflen);
-    //DEBUGP("Dumping hash state with %u bytes to disk\n", buflen);
+    // DEBUGP("Dumping hash state with %u bytes to disk\n", buflen);
     nbytes = fwrite(&buflen, sizeof(cmph_uint32), (size_t)1, fd);
     nbytes = fwrite(buf, (size_t)buflen, (size_t)1, fd);
     free(buf);
@@ -356,29 +357,29 @@ void fch_load(FILE *f, cmph_t *mphf)
     (void)nbytes;
     fch_data_t *fch = (fch_data_t *)malloc(sizeof(fch_data_t));
 
-    //DEBUGP("Loading fch mphf\n");
+    // DEBUGP("Loading fch mphf\n");
     mphf->data = fch;
-    //DEBUGP("Reading h1\n");
+    // DEBUGP("Reading h1\n");
     fch->h1 = NULL;
     nbytes = fread(&buflen, sizeof(cmph_uint32), (size_t)1, f);
-    //DEBUGP("Hash state of h1 has %u bytes\n", buflen);
+    // DEBUGP("Hash state of h1 has %u bytes\n", buflen);
     buf = (char *)malloc((size_t)buflen);
     nbytes = fread(buf, (size_t)buflen, (size_t)1, f);
     fch->h1 = hash_state_load(buf, buflen);
     free(buf);
 
-    //DEBUGP("Loading fch mphf\n");
+    // DEBUGP("Loading fch mphf\n");
     mphf->data = fch;
-    //DEBUGP("Reading h2\n");
+    // DEBUGP("Reading h2\n");
     fch->h2 = NULL;
     nbytes = fread(&buflen, sizeof(cmph_uint32), (size_t)1, f);
-    //DEBUGP("Hash state of h2 has %u bytes\n", buflen);
+    // DEBUGP("Hash state of h2 has %u bytes\n", buflen);
     buf = (char *)malloc((size_t)buflen);
     nbytes = fread(buf, (size_t)buflen, (size_t)1, f);
     fch->h2 = hash_state_load(buf, buflen);
     free(buf);
 
-    //DEBUGP("Reading m and n\n");
+    // DEBUGP("Reading m and n\n");
     nbytes = fread(&(fch->m), sizeof(cmph_uint32), (size_t)1, f);
     nbytes = fread(&(fch->c), sizeof(double), (size_t)1, f);
     nbytes = fread(&(fch->b), sizeof(cmph_uint32), (size_t)1, f);
@@ -403,7 +404,7 @@ cmph_uint32 fch_search(cmph_t *mphf, const char *key, cmph_uint32 keylen)
     cmph_uint32 h1 = hash(fch->h1, key, keylen) % fch->m;
     cmph_uint32 h2 = hash(fch->h2, key, keylen) % fch->m;
     h1 = mixh10h11h12(fch->b, fch->p1, fch->p2, h1);
-    //DEBUGP("key: %s h1: %u h2: %u  g[h1]: %u\n", key, h1, h2, fch->g[h1]);
+    // DEBUGP("key: %s h1: %u h2: %u  g[h1]: %u\n", key, h1, h2, fch->g[h1]);
     return (h2 + fch->g[h1]) % fch->m;
 }
 void fch_destroy(cmph_t *mphf)
@@ -417,9 +418,11 @@ void fch_destroy(cmph_t *mphf)
 }
 
 /** \fn void fch_pack(cmph_t *mphf, void *packed_mphf);
- *  \brief Support the ability to pack a perfect hash function into a preallocated contiguous memory space pointed by packed_mphf.
+ *  \brief Support the ability to pack a perfect hash function into a preallocated contiguous memory
+ * space pointed by packed_mphf.
  *  \param mphf pointer to the resulting mphf
- *  \param packed_mphf pointer to the contiguous memory area used to store the resulting mphf. The size of packed_mphf must be at least cmph_packed_size()
+ *  \param packed_mphf pointer to the contiguous memory area used to store the resulting mphf. The
+ * size of packed_mphf must be at least cmph_packed_size()
  */
 void fch_pack(cmph_t *mphf, void *packed_mphf)
 {

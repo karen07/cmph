@@ -6,7 +6,7 @@
 #include "select_lookup_tables.h"
 #include "select.h"
 
-//#define DEBUG
+// #define DEBUG
 #include "debug.h"
 
 #ifndef STEP_SELECT_TABLE
@@ -49,8 +49,8 @@ cmph_uint32 select_get_space_usage(select_t *sel)
 
     nbits = sel->n + sel->m;
     vec_size = (nbits + 31) >> 5;
-    sel_table_size = (sel->n >> NBITS_STEP_SELECT_TABLE) +
-                     1; // (sel->n >> NBITS_STEP_SELECT_TABLE) = (sel->n/STEP_SELECT_TABLE)
+    sel_table_size = (sel->n >> NBITS_STEP_SELECT_TABLE) + 1; // (sel->n >> NBITS_STEP_SELECT_TABLE)
+                                                              // = (sel->n/STEP_SELECT_TABLE)
 
     space_usage = 2 * sizeof(cmph_uint32) * 8; // n and m
     space_usage += vec_size * (cmph_uint32)sizeof(cmph_uint32) * 8;
@@ -106,8 +106,8 @@ void select_generate(select_t *sel, cmph_uint32 *keys_vec, cmph_uint32 n, cmph_u
     nbits = sel->n + sel->m;
     vec_size = (nbits + 31) >> 5; // (nbits + 31) >> 5 = (nbits + 31)/32
 
-    sel_table_size = (sel->n >> NBITS_STEP_SELECT_TABLE) +
-                     1; // (sel->n >> NBITS_STEP_SELECT_TABLE) = (sel->n/STEP_SELECT_TABLE)
+    sel_table_size = (sel->n >> NBITS_STEP_SELECT_TABLE) + 1; // (sel->n >> NBITS_STEP_SELECT_TABLE)
+                                                              // = (sel->n/STEP_SELECT_TABLE)
 
     if (sel->bits_vec) {
         free(sel->bits_vec);
@@ -133,7 +133,7 @@ void select_generate(select_t *sel, cmph_uint32 *keys_vec, cmph_uint32 n, cmph_u
             if (j == sel->n)
                 goto loop_end;
 
-            //assert(keys_vec[j] < keys_vec[j-1]);
+            // assert(keys_vec[j] < keys_vec[j-1]);
         }
 
         if (i == sel->m)
@@ -164,13 +164,13 @@ static inline cmph_uint32 _select_query(cmph_uint8 *bits_table, cmph_uint32 *sel
     register cmph_uint32 vec_bit_idx, vec_byte_idx;
     register cmph_uint32 part_sum, old_part_sum;
 
-    vec_bit_idx = select_table
-        [one_idx >>
-         NBITS_STEP_SELECT_TABLE]; // one_idx >> NBITS_STEP_SELECT_TABLE = one_idx/STEP_SELECT_TABLE
+    vec_bit_idx = select_table[one_idx >> NBITS_STEP_SELECT_TABLE]; // one_idx >>
+                                                                    // NBITS_STEP_SELECT_TABLE =
+                                                                    // one_idx/STEP_SELECT_TABLE
     vec_byte_idx = vec_bit_idx >> 3; // vec_bit_idx / 8
 
-    one_idx &=
-        MASK_STEP_SELECT_TABLE; // one_idx %= STEP_SELECT_TABLE == one_idx &= MASK_STEP_SELECT_TABLE
+    one_idx &= MASK_STEP_SELECT_TABLE; // one_idx %= STEP_SELECT_TABLE == one_idx &=
+                                       // MASK_STEP_SELECT_TABLE
     one_idx += rank_lookup_table[bits_table[vec_byte_idx] & ((1 << (vec_bit_idx & 0x7)) - 1)];
     part_sum = 0;
 
@@ -220,12 +220,12 @@ void select_dump(select_t *sel, char **buf, cmph_uint32 *buflen)
 {
     register cmph_uint32 nbits = sel->n + sel->m;
     register cmph_uint32 vec_size =
-        ((nbits + 31) >> 5) *
-        (cmph_uint32)sizeof(cmph_uint32); // (nbits + 31) >> 5 = (nbits + 31)/32
+        ((nbits + 31) >> 5) * (cmph_uint32)sizeof(cmph_uint32); // (nbits + 31) >> 5 = (nbits +
+                                                                // 31)/32
     register cmph_uint32 sel_table_size =
         ((sel->n >> NBITS_STEP_SELECT_TABLE) + 1) *
-        (cmph_uint32)sizeof(
-            cmph_uint32); // (sel->n >> NBITS_STEP_SELECT_TABLE) = (sel->n/STEP_SELECT_TABLE)
+        (cmph_uint32)sizeof(cmph_uint32); // (sel->n >> NBITS_STEP_SELECT_TABLE) =
+                                          // (sel->n/STEP_SELECT_TABLE)
     register cmph_uint32 pos = 0;
 
     *buflen = 2 * (cmph_uint32)sizeof(cmph_uint32) + vec_size + sel_table_size;
@@ -262,12 +262,11 @@ void select_load(select_t *sel, const char *buf, cmph_uint32 buflen)
     pos += (cmph_uint32)sizeof(cmph_uint32);
 
     nbits = sel->n + sel->m;
-    vec_size = ((nbits + 31) >> 5) *
-               (cmph_uint32)sizeof(cmph_uint32); // (nbits + 31) >> 5 = (nbits + 31)/32
-    sel_table_size =
-        ((sel->n >> NBITS_STEP_SELECT_TABLE) + 1) *
-        (cmph_uint32)sizeof(
-            cmph_uint32); // (sel->n >> NBITS_STEP_SELECT_TABLE) = (sel->n/STEP_SELECT_TABLE)
+    vec_size = ((nbits + 31) >> 5) * (cmph_uint32)sizeof(cmph_uint32); // (nbits + 31) >> 5 = (nbits
+                                                                       // + 31)/32
+    sel_table_size = ((sel->n >> NBITS_STEP_SELECT_TABLE) + 1) *
+                     (cmph_uint32)sizeof(cmph_uint32); // (sel->n >> NBITS_STEP_SELECT_TABLE) =
+                                                       // (sel->n/STEP_SELECT_TABLE)
 
     if (sel->bits_vec) {
         free(sel->bits_vec);
@@ -288,9 +287,11 @@ void select_load(select_t *sel, const char *buf, cmph_uint32 buflen)
 }
 
 /** \fn void select_pack(select_t *sel, void *sel_packed);
- *  \brief Support the ability to pack a select structure function into a preallocated contiguous memory space pointed by sel_packed.
+ *  \brief Support the ability to pack a select structure function into a preallocated contiguous
+ * memory space pointed by sel_packed.
  *  \param sel points to the select structure
- *  \param sel_packed pointer to the contiguous memory area used to store the select structure. The size of sel_packed must be at least @see select_packed_size
+ *  \param sel_packed pointer to the contiguous memory area used to store the select structure. The
+ * size of sel_packed must be at least @see select_packed_size
  */
 void select_pack(select_t *sel, void *sel_packed)
 {
@@ -311,12 +312,12 @@ cmph_uint32 select_packed_size(select_t *sel)
 {
     register cmph_uint32 nbits = sel->n + sel->m;
     register cmph_uint32 vec_size =
-        ((nbits + 31) >> 5) *
-        (cmph_uint32)sizeof(cmph_uint32); // (nbits + 31) >> 5 = (nbits + 31)/32
+        ((nbits + 31) >> 5) * (cmph_uint32)sizeof(cmph_uint32); // (nbits + 31) >> 5 = (nbits +
+                                                                // 31)/32
     register cmph_uint32 sel_table_size =
         ((sel->n >> NBITS_STEP_SELECT_TABLE) + 1) *
-        (cmph_uint32)sizeof(
-            cmph_uint32); // (sel->n >> NBITS_STEP_SELECT_TABLE) = (sel->n/STEP_SELECT_TABLE)
+        (cmph_uint32)sizeof(cmph_uint32); // (sel->n >> NBITS_STEP_SELECT_TABLE) =
+                                          // (sel->n/STEP_SELECT_TABLE)
     return 2 * (cmph_uint32)sizeof(cmph_uint32) + vec_size + sel_table_size;
 }
 

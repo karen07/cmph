@@ -8,7 +8,7 @@ typedef struct __jenkins_state_t {
     cmph_uint32 seed;
 } jenkins_state_t;
 
-jenkins_state_t *jenkins_state_new(cmph_uint32 size); //size of hash table
+jenkins_state_t *jenkins_state_new(cmph_uint32 size); // size of hash table
 
 /** \fn cmph_uint32 jenkins_hash(jenkins_state_t *state, const char *k, cmph_uint32 keylen);
  *  \param state is a pointer to a jenkins_state_t structure
@@ -18,7 +18,8 @@ jenkins_state_t *jenkins_state_new(cmph_uint32 size); //size of hash table
  */
 cmph_uint32 jenkins_hash(jenkins_state_t *state, const char *k, cmph_uint32 keylen);
 
-/** \fn void jenkins_hash_vector_(jenkins_state_t *state, const char *k, cmph_uint32 keylen, cmph_uint32 * hashes);
+/** \fn void jenkins_hash_vector_(jenkins_state_t *state, const char *k, cmph_uint32 keylen,
+ * cmph_uint32 * hashes);
  *  \param state is a pointer to a jenkins_state_t structure
  *  \param key is a pointer to a key
  *  \param keylen is the key length
@@ -33,9 +34,11 @@ jenkins_state_t *jenkins_state_load(const char *buf, cmph_uint32 buflen);
 void jenkins_state_destroy(jenkins_state_t *state);
 
 /** \fn void jenkins_state_pack(jenkins_state_t *state, void *jenkins_packed);
- *  \brief Support the ability to pack a jenkins function into a preallocated contiguous memory space pointed by jenkins_packed.
+ *  \brief Support the ability to pack a jenkins function into a preallocated contiguous memory
+ * space pointed by jenkins_packed.
  *  \param state points to the jenkins function
- *  \param jenkins_packed pointer to the contiguous memory area used to store the jenkins function. The size of jenkins_packed must be at least jenkins_state_packed_size()
+ *  \param jenkins_packed pointer to the contiguous memory area used to store the jenkins function.
+ * The size of jenkins_packed must be at least jenkins_state_packed_size()
  */
 void jenkins_state_pack(jenkins_state_t *state, void *jenkins_packed);
 
@@ -53,7 +56,8 @@ cmph_uint32 jenkins_state_packed_size(void);
  */
 cmph_uint32 jenkins_hash_packed(void *jenkins_packed, const char *k, cmph_uint32 keylen);
 
-/** \fn jenkins_hash_vector_packed(void *jenkins_packed, const char *k, cmph_uint32 keylen, cmph_uint32 * hashes);
+/** \fn jenkins_hash_vector_packed(void *jenkins_packed, const char *k, cmph_uint32 keylen,
+ * cmph_uint32 * hashes);
  *  \param jenkins_packed is a pointer to a contiguous memory area
  *  \param key is a pointer to a key
  *  \param keylen is the key length

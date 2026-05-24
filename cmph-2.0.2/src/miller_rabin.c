@@ -38,7 +38,7 @@ cmph_uint8 check_primality(cmph_uint64 n)
         return 0;
     if ((n % 7) == 0)
         return 0;
-    //we decompoe the number n - 1 into 2^s*d
+    // we decompoe the number n - 1 into 2^s*d
     s = 0;
     d = n - 1;
     do {

@@ -16,7 +16,7 @@
 #include <assert.h>
 #include <string.h>
 #define MAX_BUCKET_SIZE 255
-//#define DEBUG
+// #define DEBUG
 #include "debug.h"
 
 static int brz_gen_mphf(cmph_config_t *mph);
@@ -66,7 +66,7 @@ void brz_config_set_hashfuncs(cmph_config_t *mph, CMPH_HASH *hashfuncs)
     cmph_uint32 i = 0;
     while (*hashptr != CMPH_HASH_COUNT) {
         if (i >= 3)
-            break; //brz only uses three hash functions
+            break; // brz only uses three hash functions
         brz->hashfuncs[i] = *hashptr;
         ++i, ++hashptr;
     }
@@ -204,17 +204,17 @@ cmph_t *brz_new(cmph_config_t *mph, double c)
     mphf->algo = mph->algo;
     brzf = (brz_data_t *)malloc(sizeof(brz_data_t));
     brzf->g = brz->g;
-    brz->g = NULL; //transfer memory ownership
+    brz->g = NULL; // transfer memory ownership
     brzf->h1 = brz->h1;
-    brz->h1 = NULL; //transfer memory ownership
+    brz->h1 = NULL; // transfer memory ownership
     brzf->h2 = brz->h2;
-    brz->h2 = NULL; //transfer memory ownership
+    brz->h2 = NULL; // transfer memory ownership
     brzf->h0 = brz->h0;
-    brz->h0 = NULL; //transfer memory ownership
+    brz->h0 = NULL; // transfer memory ownership
     brzf->size = brz->size;
-    brz->size = NULL; //transfer memory ownership
+    brz->size = NULL; // transfer memory ownership
     brzf->offset = brz->offset;
-    brz->offset = NULL; //transfer memory ownership
+    brz->offset = NULL; // transfer memory ownership
     brzf->k = brz->k;
     brzf->c = brz->c;
     brzf->m = brz->m;
@@ -378,7 +378,7 @@ static int brz_gen_mphf(cmph_config_t *mph)
     nbytes = fwrite(&(brz->k), sizeof(cmph_uint32), (size_t)1, brz->mphf_fd); // number of MPHFs
     nbytes = fwrite(brz->size, sizeof(cmph_uint8) * (brz->k), (size_t)1, brz->mphf_fd);
 
-    //tmp_fds = (FILE **)calloc(nflushes, sizeof(FILE *));
+    // tmp_fds = (FILE **)calloc(nflushes, sizeof(FILE *));
     buff_manager = buffer_manager_new(brz->memory_availability, nflushes);
     buffer_merge = (cmph_uint8 **)calloc((size_t)nflushes, sizeof(cmph_uint8 *));
     buffer_h0 = (cmph_uint32 *)calloc((size_t)nflushes, sizeof(cmph_uint32));
@@ -394,7 +394,7 @@ static int brz_gen_mphf(cmph_config_t *mph)
         h0 = hash(brz->h0, key + sizeof(keylen), keylen) % brz->k;
         buffer_h0[i] = h0;
         buffer_merge[i] = (cmph_uint8 *)key;
-        key = NULL; //transfer memory ownership
+        key = NULL; // transfer memory ownership
     }
     e = 0;
     keys_vd = (cmph_uint8 **)calloc((size_t)MAX_BUCKET_SIZE, sizeof(cmph_uint8 *));
@@ -406,19 +406,19 @@ static int brz_gen_mphf(cmph_config_t *mph)
         key = (char *)buffer_manager_read_key(buff_manager, i, &keylen);
         if (key) {
             while (key) {
-                //keylen = strlen(key);
+                // keylen = strlen(key);
                 h0 = hash(brz->h0, key + sizeof(keylen), keylen) % brz->k;
                 if (h0 != buffer_h0[i])
                     break;
                 keys_vd[nkeys_vd++] = (cmph_uint8 *)key;
-                key = NULL; //transfer memory ownership
+                key = NULL; // transfer memory ownership
                 e++;
                 key = (char *)buffer_manager_read_key(buff_manager, i, &keylen);
             }
             if (key) {
                 assert(nkeys_vd < brz->size[cur_bucket]);
                 keys_vd[nkeys_vd++] = buffer_merge[i];
-                buffer_merge[i] = NULL; //transfer memory ownership
+                buffer_merge[i] = NULL; // transfer memory ownership
                 e++;
                 buffer_h0[i] = h0;
                 buffer_merge[i] = (cmph_uint8 *)key;
@@ -427,7 +427,7 @@ static int brz_gen_mphf(cmph_config_t *mph)
         if (!key) {
             assert(nkeys_vd < brz->size[cur_bucket]);
             keys_vd[nkeys_vd++] = buffer_merge[i];
-            buffer_merge[i] = NULL; //transfer memory ownership
+            buffer_merge[i] = NULL; // transfer memory ownership
             e++;
             buffer_h0[i] = UINT_MAX;
         }
@@ -525,7 +525,7 @@ static char *brz_copy_partial_fch_mphf(brz_config_data_t *brz, fch_data_t *fchf,
     char *bufh1 = NULL;
     char *bufh2 = NULL;
     char *buf = NULL;
-    cmph_uint32 n = fchf->b; //brz->size[index];
+    cmph_uint32 n = fchf->b; // brz->size[index];
     hash_state_dump(fchf->h1, &bufh1, &buflenh1);
     hash_state_dump(fchf->h2, &bufh2, &buflenh2);
     *buflen = buflenh1 + buflenh2 + n + 2U * (cmph_uint32)sizeof(cmph_uint32);
@@ -604,7 +604,7 @@ void brz_load(FILE *f, cmph_t *mphf)
     brz->h2 = (hash_state_t **)malloc(sizeof(hash_state_t *) * brz->k);
     brz->g = (cmph_uint8 **)calloc((size_t)brz->k, sizeof(cmph_uint8 *));
     DEBUGP("Reading c = %f   k = %u   algo = %u \n", brz->c, brz->k, brz->algo);
-    //loading h_i1, h_i2 and g_i.
+    // loading h_i1, h_i2 and g_i.
     for (i = 0; i < brz->k; i++) {
         // h1
         nbytes = fread(&buflen, sizeof(cmph_uint32), (size_t)1, f);
@@ -613,7 +613,7 @@ void brz_load(FILE *f, cmph_t *mphf)
         nbytes = fread(buf, (size_t)buflen, (size_t)1, f);
         brz->h1[i] = hash_state_load(buf, buflen);
         free(buf);
-        //h2
+        // h2
         nbytes = fread(&buflen, sizeof(cmph_uint32), (size_t)1, f);
         DEBUGP("Hash state 2 has %u bytes\n", buflen);
         buf = (char *)malloc((size_t)buflen);
@@ -634,7 +634,7 @@ void brz_load(FILE *f, cmph_t *mphf)
         brz->g[i] = (cmph_uint8 *)calloc((size_t)n, sizeof(cmph_uint8));
         nbytes = fread(brz->g[i], sizeof(cmph_uint8) * n, (size_t)1, f);
     }
-    //loading h0
+    // loading h0
     nbytes = fread(&buflen, sizeof(cmph_uint32), (size_t)1, f);
     DEBUGP("Hash state has %u bytes\n", buflen);
     buf = (char *)malloc((size_t)buflen);
@@ -642,7 +642,7 @@ void brz_load(FILE *f, cmph_t *mphf)
     brz->h0 = hash_state_load(buf, buflen);
     free(buf);
 
-    //loading c, m, and the vector offset.
+    // loading c, m, and the vector offset.
     nbytes = fread(&(brz->m), sizeof(cmph_uint32), (size_t)1, f);
     brz->offset = (cmph_uint32 *)malloc(sizeof(cmph_uint32) * brz->k);
     nbytes = fread(brz->offset, sizeof(cmph_uint32) * (brz->k), (size_t)1, f);
@@ -729,9 +729,11 @@ void brz_destroy(cmph_t *mphf)
 }
 
 /** \fn void brz_pack(cmph_t *mphf, void *packed_mphf);
- *  \brief Support the ability to pack a perfect hash function into a preallocated contiguous memory space pointed by packed_mphf.
+ *  \brief Support the ability to pack a perfect hash function into a preallocated contiguous memory
+ * space pointed by packed_mphf.
  *  \param mphf pointer to the resulting mphf
- *  \param packed_mphf pointer to the contiguous memory area used to store the resulting mphf. The size of packed_mphf must be at least cmph_packed_size()
+ *  \param packed_mphf pointer to the contiguous memory area used to store the resulting mphf. The
+ * size of packed_mphf must be at least cmph_packed_size()
  */
 void brz_pack(cmph_t *mphf, void *packed_mphf)
 {

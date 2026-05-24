@@ -10,7 +10,7 @@
 #include "chd_structs.h"
 #include "chd.h"
 #include "bitbool.h"
-//#define DEBUG
+// #define DEBUG
 #include "debug.h"
 
 chd_config_data_t *chd_config_new(cmph_config_t *mph)
@@ -138,10 +138,10 @@ cmph_t *chd_new(cmph_config_t *mph, double c)
     chdf = (chd_data_t *)malloc(sizeof(chd_data_t));
 
     chdf->packed_cr = packed_cr;
-    packed_cr = NULL; //transfer memory ownership
+    packed_cr = NULL; // transfer memory ownership
 
     chdf->packed_chd_phf = packed_chd_phf;
-    packed_chd_phf = NULL; //transfer memory ownership
+    packed_chd_phf = NULL; // transfer memory ownership
 
     chdf->packed_chd_phf_size = packed_chd_phf_size;
     chdf->packed_cr_size = packed_cr_size;

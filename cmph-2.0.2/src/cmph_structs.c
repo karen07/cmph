@@ -2,7 +2,7 @@
 
 #include <string.h>
 
-//#define DEBUG
+// #define DEBUG
 #include "debug.h"
 
 cmph_config_t *__config_new(cmph_io_adapter_t *key_source)

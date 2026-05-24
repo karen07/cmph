@@ -27,7 +27,7 @@ int main(int argc, char **argv)
     cmph_io_adapter_t *source = cmph_io_struct_vector_adapter(
         vector, (cmph_uint32)sizeof(rec_t), (cmph_uint32)sizeof(cmph_uint32), 11, nkeys);
 
-    //Create minimal perfect hash function using the BDZ algorithm.
+    // Create minimal perfect hash function using the BDZ algorithm.
     cmph_config_t *config = cmph_config_new(source);
     cmph_config_set_algo(config, CMPH_BDZ);
     cmph_config_set_mphf_fd(config, mphf_fd);
@@ -37,7 +37,7 @@ int main(int argc, char **argv)
     cmph_destroy(hash);
     fclose(mphf_fd);
 
-    //Find key
+    // Find key
     mphf_fd = fopen("temp_struct_vector.mph", "rb");
     hash = cmph_load(mphf_fd);
     while (i < nkeys) {
@@ -47,7 +47,7 @@ int main(int argc, char **argv)
         i++;
     }
 
-    //Destroy hash
+    // Destroy hash
     cmph_destroy(hash);
     cmph_io_vector_adapter_destroy(source);
     fclose(mphf_fd);

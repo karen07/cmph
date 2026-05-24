@@ -11,7 +11,8 @@
 // #define DEBUG
 #include "debug.h"
 
-/* static const cmph_uint8 bitmask[8] = { 1, 1 << 1, 1 << 2, 1 << 3, 1 << 4, 1 << 5, 1 << 6, 1 << 7 } */
+/* static const cmph_uint8 bitmask[8] = { 1, 1 << 1, 1 << 2, 1 << 3, 1 << 4, 1 << 5, 1 << 6, 1 << 7
+ * } */
 /* #define GETBIT(array, i) (array[(i) / 8] & bitmask[(i) % 8]) */
 /* #define SETBIT(array, i) (array[(i) / 8] |= bitmask[(i) % 8]) */
 /* #define UNSETBIT(array, i) (array[(i) / 8] &= (~(bitmask[(i) % 8]))) */
@@ -129,7 +130,7 @@ static void del_edge_point(graph_t *g, cmph_uint32 v1, cmph_uint32 v2)
     e = g->first[v1];
     if (check_edge(g, e, v1, v2)) {
         g->first[v1] = g->next[e];
-        //g->edges[e] = EMPTY;
+        // g->edges[e] = EMPTY;
         DEBUGP("Deleted\n");
         return;
     }
@@ -141,7 +142,7 @@ static void del_edge_point(graph_t *g, cmph_uint32 v1, cmph_uint32 v2)
     } while (!check_edge(g, e, v1, v2));
 
     g->next[prev] = g->next[e];
-    //g->edges[e] = EMPTY;
+    // g->edges[e] = EMPTY;
     DEBUGP("Deleted\n");
 }
 

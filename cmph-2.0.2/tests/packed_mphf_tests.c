@@ -142,7 +142,7 @@ int main(int argc, char **argv)
     cmph_pack(mphf, packed_mphf);
 
 // testing the packed function
-//check all keys
+// check all keys
 #ifdef CMPH_TIMING
     double evaluation_time_begin = 0.0;
     double evaluation_time = 0.0;

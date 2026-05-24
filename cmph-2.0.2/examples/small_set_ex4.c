@@ -51,7 +51,7 @@ int main(void)
     cmph_uint32 vec1[] = { 1, 2, 3, 4, 5 };
     cmph_uint32 vec1_len = 5;
 
-    cmph_uint32 vec2[] = { 7576423, 7554496 }; //CMPH_FCH, CMPH_BDZ, CMPH_BDZ_PH (4,5,6)
+    cmph_uint32 vec2[] = { 7576423, 7554496 }; // CMPH_FCH, CMPH_BDZ, CMPH_BDZ_PH (4,5,6)
     cmph_uint32 vec2_len = 2;
     cmph_uint32 vec3[] = { 2184764, 1882984, 1170551 }; // CMPH_CHD_PH, CMPH_CHD (7,8)
     cmph_uint32 vec3_len = 3;

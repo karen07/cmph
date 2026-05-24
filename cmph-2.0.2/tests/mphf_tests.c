@@ -114,7 +114,7 @@ int main(int argc, char **argv)
     cmph_uint32 siz = cmph_size(mphf);
     hashtable = (cmph_uint8 *)malloc(siz * sizeof(cmph_uint8));
     memset(hashtable, 0, (size_t)siz);
-    //check all keys
+    // check all keys
     for (i = 0; i < source->nkeys; ++i) {
         cmph_uint32 h;
         char *buf;

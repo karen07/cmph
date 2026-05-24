@@ -9,7 +9,7 @@
 #include <stdio.h>
 #include <assert.h>
 #include <string.h>
-//#define DEBUG
+// #define DEBUG
 #include "debug.h"
 #define UNASSIGNED 3
 #define NULL_EDGE 0xffffffff
@@ -227,8 +227,8 @@ static int bdz_ph_generate_queue(cmph_uint32 nedges, cmph_uint32 nvertices, bdz_
         }
     }
     free(marked_edge);
-    return (int)queue_head -
-           (int)nedges; /* returns 0 if successful otherwies return negative number*/
+    return (int)queue_head - (int)nedges; /* returns 0 if successful otherwies return negative
+                                             number*/
 }
 
 static int bdz_ph_mapping(cmph_config_t *mph, bdz_ph_graph3_t *graph3, bdz_ph_queue_t queue);
@@ -261,7 +261,7 @@ void bdz_ph_config_set_hashfuncs(cmph_config_t *mph, CMPH_HASH *hashfuncs)
     cmph_uint32 i = 0;
     while (*hashptr != CMPH_HASH_COUNT) {
         if (i >= 1)
-            break; //bdz_ph only uses one linear hash function
+            break; // bdz_ph only uses one linear hash function
         bdz_ph->hashfunc = *hashptr;
         ++i, ++hashptr;
     }
@@ -358,9 +358,9 @@ cmph_t *bdz_ph_new(cmph_config_t *mph, double c)
     mphf->algo = mph->algo;
     bdz_phf = (bdz_ph_data_t *)malloc(sizeof(bdz_ph_data_t));
     bdz_phf->g = bdz_ph->g;
-    bdz_ph->g = NULL; //transfer memory ownership
+    bdz_ph->g = NULL; // transfer memory ownership
     bdz_phf->hl = bdz_ph->hl;
-    bdz_ph->hl = NULL; //transfer memory ownership
+    bdz_ph->hl = NULL; // transfer memory ownership
     bdz_phf->n = bdz_ph->n;
     bdz_phf->m = bdz_ph->m;
     bdz_phf->r = bdz_ph->r;
@@ -418,7 +418,7 @@ static void assigning(bdz_ph_config_data_t *bdz_ph, bdz_ph_graph3_t *graph3, bdz
     cmph_uint32 sizeg = (cmph_uint32)ceil(bdz_ph->n / 4.0);
     bdz_ph->g = (cmph_uint8 *)calloc((size_t)sizeg, sizeof(cmph_uint8));
     memset(marked_vertices, 0, (size_t)(bdz_ph->n >> 3) + 1);
-    //memset(bdz_ph->g, 0xff, sizeg);
+    // memset(bdz_ph->g, 0xff, sizeg);
 
     for (i = nedges - 1; i + 1 >= 1; i--) {
         curr_edge = queue[i];
@@ -429,18 +429,18 @@ static void assigning(bdz_ph_config_data_t *bdz_ph, bdz_ph_graph3_t *graph3, bdz
                GETVALUE(bdz_ph->g, v1), GETVALUE(bdz_ph->g, v2));
         if (!GETBIT(marked_vertices, v0)) {
             if (!GETBIT(marked_vertices, v1)) {
-                //SETVALUE(bdz_ph->g, v1, UNASSIGNED);
+                // SETVALUE(bdz_ph->g, v1, UNASSIGNED);
                 SETBIT(marked_vertices, v1);
             }
             if (!GETBIT(marked_vertices, v2)) {
-                //SETVALUE(bdz_ph->g, v2, UNASSIGNED);
+                // SETVALUE(bdz_ph->g, v2, UNASSIGNED);
                 SETBIT(marked_vertices, v2);
             }
             SETVALUE0(bdz_ph->g, v0, (6 - (GETVALUE(bdz_ph->g, v1) + GETVALUE(bdz_ph->g, v2))) % 3);
             SETBIT(marked_vertices, v0);
         } else if (!GETBIT(marked_vertices, v1)) {
             if (!GETBIT(marked_vertices, v2)) {
-                //SETVALUE(bdz_ph->g, v2, UNASSIGNED);
+                // SETVALUE(bdz_ph->g, v2, UNASSIGNED);
                 SETBIT(marked_vertices, v2);
             }
             SETVALUE0(bdz_ph->g, v1, (7 - (GETVALUE(bdz_ph->g, v0) + GETVALUE(bdz_ph->g, v2))) % 3);
@@ -570,9 +570,11 @@ void bdz_ph_destroy(cmph_t *mphf)
 }
 
 /** \fn void bdz_ph_pack(cmph_t *mphf, void *packed_mphf);
- *  \brief Support the ability to pack a perfect hash function into a preallocated contiguous memory space pointed by packed_mphf.
+ *  \brief Support the ability to pack a perfect hash function into a preallocated contiguous memory
+ * space pointed by packed_mphf.
  *  \param mphf pointer to the resulting mphf
- *  \param packed_mphf pointer to the contiguous memory area used to store the resulting mphf. The size of packed_mphf must be at least cmph_packed_size()
+ *  \param packed_mphf pointer to the contiguous memory area used to store the resulting mphf. The
+ * size of packed_mphf must be at least cmph_packed_size()
  */
 void bdz_ph_pack(cmph_t *mphf, void *packed_mphf)
 {

@@ -14,7 +14,7 @@ int main(int argc, char **argv)
     // Source of keys
     cmph_io_adapter_t *source = cmph_io_vector_adapter((char **)vector, nkeys);
 
-    //Create minimal perfect hash function using the brz algorithm.
+    // Create minimal perfect hash function using the brz algorithm.
     cmph_config_t *config = cmph_config_new(source);
     cmph_config_set_algo(config, CMPH_BRZ);
     cmph_config_set_mphf_fd(config, mphf_fd);
@@ -24,7 +24,7 @@ int main(int argc, char **argv)
     cmph_destroy(hash);
     fclose(mphf_fd);
 
-    //Find key
+    // Find key
     mphf_fd = fopen("temp.mph", "rb");
     hash = cmph_load(mphf_fd);
     while (i < nkeys) {
@@ -34,7 +34,7 @@ int main(int argc, char **argv)
         i++;
     }
 
-    //Destroy hash
+    // Destroy hash
     cmph_destroy(hash);
     cmph_io_vector_adapter_destroy(source);
     fclose(mphf_fd);

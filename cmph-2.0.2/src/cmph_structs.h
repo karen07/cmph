@@ -4,7 +4,7 @@
 #include "cmph.h"
 
 /** Hash generation algorithm data
-  */
+ */
 struct __config_t {
     CMPH_ALGO algo;
     cmph_io_adapter_t *key_source;
@@ -14,7 +14,7 @@ struct __config_t {
 };
 
 /** Hash querying algorithm data
-  */
+ */
 struct __cmph_t {
     CMPH_ALGO algo;
     cmph_uint32 size;

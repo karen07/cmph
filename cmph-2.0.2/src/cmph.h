@@ -74,7 +74,8 @@ int cmph_dump(cmph_t *mphf, FILE *f);
 cmph_t *cmph_load(FILE *f);
 
 /** \fn void cmph_pack(cmph_t *mphf, void *packed_mphf);
- *  \brief Support the ability to pack a perfect hash function into a preallocated contiguous memory space pointed by packed_mphf.
+ *  \brief Support the ability to pack a perfect hash function into a preallocated contiguous memory
+ * space pointed by packed_mphf.
  *  \param mphf pointer to the resulting mphf
  *  \param packed_mphf pointer to the contiguous memory area used to store the
  *  \param resulting mphf. The size of packed_mphf must be at least cmph_packed_size()

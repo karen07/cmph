@@ -1,19 +1,19 @@
 #include "jenkins_hash.h"
 #include <stdlib.h>
 #ifdef WIN32
-#define _USE_MATH_DEFINES //For M_LOG2E
+#define _USE_MATH_DEFINES // For M_LOG2E
 #endif
 #include <math.h>
 #include <limits.h>
 #include <string.h>
 
-//#define DEBUG
+// #define DEBUG
 #include "debug.h"
 
 #define hashsize(n) ((cmph_uint32)1 << (n))
 #define hashmask(n) (hashsize(n) - 1)
 
-//#define NM2 /* Define this if you do not want power of 2 table sizes*/
+// #define NM2 /* Define this if you do not want power of 2 table sizes*/
 
 /*
    --------------------------------------------------------------------
@@ -99,7 +99,7 @@ Use for hash table lookup, or anything where one collision in 2^^32 is
 acceptable.  Do NOT use for cryptographic purposes.
 --------------------------------------------------------------------
  */
-jenkins_state_t *jenkins_state_new(cmph_uint32 size) //size of hash table
+jenkins_state_t *jenkins_state_new(cmph_uint32 size) // size of hash table
 {
     jenkins_state_t *state = (jenkins_state_t *)malloc(sizeof(jenkins_state_t));
     if (!state)
@@ -284,9 +284,11 @@ jenkins_state_t *jenkins_state_load(const char *buf, cmph_uint32 buflen)
 }
 
 /** \fn void jenkins_state_pack(jenkins_state_t *state, void *jenkins_packed);
- *  \brief Support the ability to pack a jenkins function into a preallocated contiguous memory space pointed by jenkins_packed.
+ *  \brief Support the ability to pack a jenkins function into a preallocated contiguous memory
+ * space pointed by jenkins_packed.
  *  \param state points to the jenkins function
- *  \param jenkins_packed pointer to the contiguous memory area used to store the jenkins function. The size of jenkins_packed must be at least jenkins_state_packed_size()
+ *  \param jenkins_packed pointer to the contiguous memory area used to store the jenkins function.
+ * The size of jenkins_packed must be at least jenkins_state_packed_size()
  */
 void jenkins_state_pack(jenkins_state_t *state, void *jenkins_packed)
 {
@@ -318,7 +320,8 @@ cmph_uint32 jenkins_hash_packed(void *jenkins_packed, const char *k, cmph_uint32
     return hashes[2];
 }
 
-/** \fn jenkins_hash_vector_packed(void *jenkins_packed, const char *k, cmph_uint32 keylen, cmph_uint32 * hashes);
+/** \fn jenkins_hash_vector_packed(void *jenkins_packed, const char *k, cmph_uint32 keylen,
+ * cmph_uint32 * hashes);
  *  \param jenkins_packed is a pointer to a contiguous memory area
  *  \param key is a pointer to a key
  *  \param keylen is the key length

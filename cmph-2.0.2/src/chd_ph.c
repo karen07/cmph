@@ -12,7 +12,7 @@
 #include "miller_rabin.h"
 #include "bitbool.h"
 
-//#define DEBUG
+// #define DEBUG
 #include "debug.h"
 
 // NO_ELEMENT is equivalent to null pointer
@@ -179,7 +179,7 @@ void chd_ph_config_set_hashfuncs(cmph_config_t *mph, CMPH_HASH *hashfuncs)
     cmph_uint32 i = 0;
     while (*hashptr != CMPH_HASH_COUNT) {
         if (i >= 1)
-            break; //chd_ph only uses one linear hash function
+            break; // chd_ph only uses one linear hash function
         chd_ph->hashfunc = *hashptr;
         ++i, ++hashptr;
     }
@@ -241,8 +241,8 @@ cmph_uint8 chd_ph_mapping(cmph_config_t *mph, chd_ph_bucket_t *buckets, chd_ph_i
             mph->key_source->dispose(mph->key_source->data, key, keylen);
             //             if(buckets[g].size == (chd_ph->keys_per_bucket << 2))
             //             {
-            //                 DEBUGP("BUCKET = %u -- SIZE = %u -- MAXIMUM SIZE = %u\n", g, buckets[g].size, (chd_ph->keys_per_bucket << 2));
-            //                 goto error;
+            //                 DEBUGP("BUCKET = %u -- SIZE = %u -- MAXIMUM SIZE = %u\n", g,
+            //                 buckets[g].size, (chd_ph->keys_per_bucket << 2)); goto error;
             //             }
             buckets[g].u.size++;
             if (buckets[g].u.size > *max_bucket_size) {
@@ -298,15 +298,17 @@ chd_ph_sorted_list_t *chd_ph_ordering(chd_ph_bucket_t **_buckets, chd_ph_item_t 
         sorted_lists[bucket_size].size++;
     }
     sorted_lists[1].buckets_list = 0;
-    // Determine final position of list of buckets into the contiguous array that will store all the buckets
+    // Determine final position of list of buckets into the contiguous array that will store all the
+    // buckets
     for (i = 2; i <= max_bucket_size; i++) {
         sorted_lists[i].buckets_list = sorted_lists[i - 1].buckets_list + sorted_lists[i - 1].size;
         sorted_lists[i - 1].size = 0;
     }
     sorted_lists[i - 1].size = 0;
     // Store the buckets in a new array which is sorted by bucket sizes
-    output_buckets = (chd_ph_bucket_t *)calloc(
-        nbuckets, sizeof(chd_ph_bucket_t)); // everything is initialized with zero
+    output_buckets = (chd_ph_bucket_t *)calloc(nbuckets, sizeof(chd_ph_bucket_t)); // everything is
+                                                                                   // initialized
+                                                                                   // with zero
     //      non_empty_buckets = nbuckets;
 
     for (i = 0; i < nbuckets; i++) {
@@ -343,7 +345,7 @@ chd_ph_sorted_list_t *chd_ph_ordering(chd_ph_bucket_t **_buckets, chd_ph_item_t 
             }
         }
     }
-    //Return the items sorted in new order and free the old items sorted in old order
+    // Return the items sorted in new order and free the old items sorted in old order
     free(input_items);
     (*_items) = output_items;
     return sorted_lists;
@@ -494,7 +496,8 @@ static inline cmph_uint8 place_buckets2(chd_ph_config_data_t *chd_ph, chd_ph_buc
                                        i)) {
                     disp_table[buckets[curr_bucket].u.bucket_id] =
                         probe0_num + probe1_num * chd_ph->n;
-                    //                     DEBUGP("BUCKET %u PLACED --- DISPLACEMENT = %u\n", curr_bucket, disp_table[curr_bucket]);
+                    //                     DEBUGP("BUCKET %u PLACED --- DISPLACEMENT = %u\n",
+                    //                     curr_bucket, disp_table[curr_bucket]);
                 } else {
 //                     DEBUGP("BUCKET %u NOT PLACED\n", curr_bucket);
 #ifdef DEBUG
@@ -635,7 +638,7 @@ cmph_t *chd_ph_new(cmph_config_t *mph, double c)
 
     chd_ph->n = (cmph_uint32)(chd_ph->m / (chd_ph->keys_per_bin * load_factor)) + 1;
 
-    //Round the number of bins to the prime immediately above
+    // Round the number of bins to the prime immediately above
     if (chd_ph->n % 2 == 0)
         chd_ph->n++;
     for (;;) {
@@ -769,9 +772,9 @@ cleanup:
     chd_phf = (chd_ph_data_t *)malloc(sizeof(chd_ph_data_t));
 
     chd_phf->cs = chd_ph->cs;
-    chd_ph->cs = NULL; //transfer memory ownership
+    chd_ph->cs = NULL; // transfer memory ownership
     chd_phf->hl = chd_ph->hl;
-    chd_ph->hl = NULL; //transfer memory ownership
+    chd_ph->hl = NULL; // transfer memory ownership
     chd_phf->n = chd_ph->n;
     chd_phf->nbuckets = chd_ph->nbuckets;
 
@@ -907,7 +910,7 @@ void chd_ph_pack(cmph_t *mphf, void *packed_mphf)
 
     // packing cs
     compressed_seq_pack(data->cs, ptr);
-    //ptr += compressed_seq_packed_size(data->cs);
+    // ptr += compressed_seq_packed_size(data->cs);
 }
 
 cmph_uint32 chd_ph_packed_size(cmph_t *mphf)

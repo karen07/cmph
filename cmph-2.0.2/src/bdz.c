@@ -14,9 +14,9 @@
 #define UNASSIGNED 3U
 #define NULL_EDGE 0xffffffff
 
-//cmph_uint32 ngrafos = 0;
-//cmph_uint32 ngrafos_aciclicos = 0;
-// table used for looking up the number of assigned vertices  a 8-bit integer
+// cmph_uint32 ngrafos = 0;
+// cmph_uint32 ngrafos_aciclicos = 0;
+//  table used for looking up the number of assigned vertices  a 8-bit integer
 const cmph_uint8 bdz_lookup_table[] = {
     4, 4, 4, 3, 4, 4, 4, 3, 4, 4, 4, 3, 3, 3, 3, 2, 4, 4, 4, 3, 4, 4, 4, 3, 4, 4, 4, 3, 3, 3, 3, 2,
     4, 4, 4, 3, 4, 4, 4, 3, 4, 4, 4, 3, 3, 3, 3, 2, 3, 3, 3, 2, 3, 3, 3, 2, 3, 3, 3, 2, 2, 2, 2, 1,
@@ -218,9 +218,9 @@ bdz_config_data_t *bdz_config_new(void)
     bdz->hashfunc = CMPH_HASH_JENKINS;
     bdz->g = NULL;
     bdz->hl = NULL;
-    bdz->k = 0; //kth index in ranktable, $k = log_2(n=3r)/\varepsilon$
+    bdz->k = 0; // kth index in ranktable, $k = log_2(n=3r)/\varepsilon$
     bdz->b = 7; // number of bits of k
-    bdz->ranktablesize = 0; //number of entries in ranktable, $n/k +1$
+    bdz->ranktablesize = 0; // number of entries in ranktable, $n/k +1$
     bdz->ranktable = NULL; // rank table
     return bdz;
 }
@@ -248,7 +248,7 @@ void bdz_config_set_hashfuncs(cmph_config_t *mph, CMPH_HASH *hashfuncs)
     cmph_uint32 i = 0;
     while (*hashptr != CMPH_HASH_COUNT) {
         if (i >= 1)
-            break; //bdz only uses one linear hash function
+            break; // bdz only uses one linear hash function
         bdz->hashfunc = *hashptr;
         ++i, ++hashptr;
     }
@@ -306,7 +306,7 @@ cmph_t *bdz_new(cmph_config_t *mph, double c)
         bdz->hl = hash_state_new(bdz->hashfunc, 15);
 
         ok = bdz_mapping(mph, &graph3, edges);
-        //ok = 0;
+        // ok = 0;
         if (!ok) {
             --iterations;
             hash_state_destroy(bdz->hl);
@@ -349,11 +349,11 @@ cmph_t *bdz_new(cmph_config_t *mph, double c)
     mphf->algo = mph->algo;
     bdzf = (bdz_data_t *)malloc(sizeof(bdz_data_t));
     bdzf->g = bdz->g;
-    bdz->g = NULL; //transfer memory ownership
+    bdz->g = NULL; // transfer memory ownership
     bdzf->hl = bdz->hl;
-    bdz->hl = NULL; //transfer memory ownership
+    bdz->hl = NULL; // transfer memory ownership
     bdzf->ranktable = bdz->ranktable;
-    bdz->ranktable = NULL; //transfer memory ownership
+    bdz->ranktable = NULL; // transfer memory ownership
     bdzf->ranktablesize = bdz->ranktablesize;
     bdzf->k = bdz->k;
     bdzf->b = bdz->b;
@@ -603,9 +603,11 @@ void bdz_destroy(cmph_t *mphf)
 }
 
 /** \fn void bdz_pack(cmph_t *mphf, void *packed_mphf);
- *  \brief Support the ability to pack a perfect hash function into a preallocated contiguous memory space pointed by packed_mphf.
+ *  \brief Support the ability to pack a perfect hash function into a preallocated contiguous memory
+ * space pointed by packed_mphf.
  *  \param mphf pointer to the resulting mphf
- *  \param packed_mphf pointer to the contiguous memory area used to store the resulting mphf. The size of packed_mphf must be at least cmph_packed_size()
+ *  \param packed_mphf pointer to the contiguous memory area used to store the resulting mphf. The
+ * size of packed_mphf must be at least cmph_packed_size()
  */
 void bdz_pack(cmph_t *mphf, void *packed_mphf)
 {

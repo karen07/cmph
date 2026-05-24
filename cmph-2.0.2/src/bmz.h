@@ -17,9 +17,11 @@ void bmz_destroy(cmph_t *mphf);
 cmph_uint32 bmz_search(cmph_t *mphf, const char *key, cmph_uint32 keylen);
 
 /** \fn void bmz_pack(cmph_t *mphf, void *packed_mphf);
- *  \brief Support the ability to pack a perfect hash function into a preallocated contiguous memory space pointed by packed_mphf.
+ *  \brief Support the ability to pack a perfect hash function into a preallocated contiguous memory
+ * space pointed by packed_mphf.
  *  \param mphf pointer to the resulting mphf
- *  \param packed_mphf pointer to the contiguous memory area used to store the resulting mphf. The size of packed_mphf must be at least cmph_packed_size()
+ *  \param packed_mphf pointer to the contiguous memory area used to store the resulting mphf. The
+ * size of packed_mphf must be at least cmph_packed_size()
  */
 void bmz_pack(cmph_t *mphf, void *packed_mphf);
 

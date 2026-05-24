@@ -6,8 +6,9 @@
 struct _compressed_rank_t {
     cmph_uint32 max_val;
     cmph_uint32 n; // number of values stored in vals_rems
-    // The length in bits of each value is decomposed into two compnents: the lg(n) MSBs are stored in rank_select data structure
-    // the remaining LSBs are stored in a table of n cells, each one of rem_r bits.
+    // The length in bits of each value is decomposed into two compnents: the lg(n) MSBs are stored
+    // in rank_select data structure the remaining LSBs are stored in a table of n cells, each one
+    // of rem_r bits.
     cmph_uint32 rem_r;
     select_t sel;
     cmph_uint32 *vals_rems;
@@ -30,9 +31,11 @@ void compressed_rank_dump(compressed_rank_t *cr, char **buf, cmph_uint32 *buflen
 void compressed_rank_load(compressed_rank_t *cr, const char *buf, cmph_uint32 buflen);
 
 /** \fn void compressed_rank_pack(compressed_rank_t *cr, void *cr_packed);
- *  \brief Support the ability to pack a compressed_rank structure into a preallocated contiguous memory space pointed by cr_packed.
+ *  \brief Support the ability to pack a compressed_rank structure into a preallocated contiguous
+ * memory space pointed by cr_packed.
  *  \param cr points to the compressed_rank structure
- *  \param cr_packed pointer to the contiguous memory area used to store the compressed_rank structure. The size of cr_packed must be at least @see compressed_rank_packed_size
+ *  \param cr_packed pointer to the contiguous memory area used to store the compressed_rank
+ * structure. The size of cr_packed must be at least @see compressed_rank_packed_size
  */
 void compressed_rank_pack(compressed_rank_t *cr, void *cr_packed);
 

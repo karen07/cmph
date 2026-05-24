@@ -6,7 +6,7 @@ int main(int argc, char **argv)
 {
     (void)argc;
     (void)argv;
-    //Open file with newline separated list of keys
+    // Open file with newline separated list of keys
     FILE *keys_fd = fopen("keys.txt", "r");
     cmph_t *hash = NULL;
     if (keys_fd == NULL) {
@@ -21,11 +21,11 @@ int main(int argc, char **argv)
     hash = cmph_new(config);
     cmph_config_destroy(config);
 
-    //Find key
+    // Find key
     const char *key = "jjjjjjjjjj";
     unsigned int id = cmph_search(hash, key, (cmph_uint32)strlen(key));
     fprintf(stderr, "Id:%u\n", id);
-    //Destroy hash
+    // Destroy hash
     cmph_destroy(hash);
     cmph_io_nlfile_adapter_destroy(source);
     fclose(keys_fd);

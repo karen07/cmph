@@ -11,7 +11,7 @@
 #include <assert.h>
 #include <string.h>
 
-//#define DEBUG
+// #define DEBUG
 #include "debug.h"
 
 static int chm_gen_edges(cmph_config_t *mph);
@@ -45,7 +45,7 @@ void chm_config_set_hashfuncs(cmph_config_t *mph, CMPH_HASH *hashfuncs)
     cmph_uint32 i = 0;
     while (*hashptr != CMPH_HASH_COUNT) {
         if (i >= 2)
-            break; //chm only uses two hash functions
+            break; // chm only uses two hash functions
         chm->hashfuncs[i] = *hashptr;
         ++i, ++hashptr;
     }
@@ -71,7 +71,7 @@ cmph_t *chm_new(cmph_config_t *mph, double c)
     chm->hashes = (hash_state_t **)malloc(sizeof(hash_state_t *) * 3);
     for (i = 0; i < 3; ++i)
         chm->hashes[i] = NULL;
-    //Mapping step
+    // Mapping step
     if (mph->verbosity) {
         fprintf(stderr, "Entering mapping step for mph creation of %u keys with graph sized %u\n",
                 chm->m, chm->n);
@@ -102,7 +102,7 @@ cmph_t *chm_new(cmph_config_t *mph, double c)
         return NULL;
     }
 
-    //Assignment step
+    // Assignment step
     if (mph->verbosity) {
         fprintf(stderr, "Starting assignment step\n");
     }
@@ -126,9 +126,9 @@ cmph_t *chm_new(cmph_config_t *mph, double c)
     mphf->algo = mph->algo;
     chmf = (chm_data_t *)malloc(sizeof(chm_data_t));
     chmf->g = chm->g;
-    chm->g = NULL; //transfer memory ownership
+    chm->g = NULL; // transfer memory ownership
     chmf->hashes = chm->hashes;
-    chm->hashes = NULL; //transfer memory ownership
+    chm->hashes = NULL; // transfer memory ownership
     chmf->n = chm->n;
     chmf->m = chm->m;
     mphf->data = chmf;
@@ -203,7 +203,7 @@ int chm_dump(cmph_t *mphf, FILE *fd)
 {
     char *buf = NULL;
     cmph_uint32 buflen;
-    cmph_uint32 two = 2; //number of hash functions
+    cmph_uint32 two = 2; // number of hash functions
     chm_data_t *data = (chm_data_t *)mphf->data;
     register size_t nbytes;
     (void)nbytes;
@@ -299,9 +299,11 @@ void chm_destroy(cmph_t *mphf)
 }
 
 /** \fn void chm_pack(cmph_t *mphf, void *packed_mphf);
- *  \brief Support the ability to pack a perfect hash function into a preallocated contiguous memory space pointed by packed_mphf.
+ *  \brief Support the ability to pack a perfect hash function into a preallocated contiguous memory
+ * space pointed by packed_mphf.
  *  \param mphf pointer to the resulting mphf
- *  \param packed_mphf pointer to the contiguous memory area used to store the resulting mphf. The size of packed_mphf must be at least cmph_packed_size()
+ *  \param packed_mphf pointer to the contiguous memory area used to store the resulting mphf. The
+ * size of packed_mphf must be at least cmph_packed_size()
  */
 void chm_pack(cmph_t *mphf, void *packed_mphf)
 {

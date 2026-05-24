@@ -57,7 +57,7 @@ void bmz_config_set_hashfuncs(cmph_config_t *mph, CMPH_HASH *hashfuncs)
     cmph_uint32 i = 0;
     while (*hashptr != CMPH_HASH_COUNT) {
         if (i >= 2)
-            break; //bmz only uses two hash functions
+            break; // bmz only uses two hash functions
         bmz->hashfuncs[i] = *hashptr;
         ++i, ++hashptr;
     }
@@ -194,9 +194,9 @@ cmph_t *bmz_new(cmph_config_t *mph, double c)
     mphf->algo = mph->algo;
     bmzf = (bmz_data_t *)malloc(sizeof(bmz_data_t));
     bmzf->g = bmz->g;
-    bmz->g = NULL; //transfer memory ownership
+    bmz->g = NULL; // transfer memory ownership
     bmzf->hashes = bmz->hashes;
-    bmz->hashes = NULL; //transfer memory ownership
+    bmz->hashes = NULL; // transfer memory ownership
     bmzf->n = bmz->n;
     bmzf->m = bmz->m;
     mphf->data = bmzf;
@@ -224,8 +224,8 @@ static cmph_uint8 bmz_traverse_critical_nodes(bmz_config_data_t *bmz, cmph_uint3
     DEBUGP("Labelling critical vertices\n");
     bmz->g[v] = (cmph_uint32)ceil((double)(*biggest_edge_value) / 2) - 1;
     SETBIT(visited, v);
-    next_g = (cmph_uint32)floor(
-        (double)(*biggest_edge_value / 2)); /* next_g is incremented in the do..while statement*/
+    next_g = (cmph_uint32)floor((double)(*biggest_edge_value / 2)); /* next_g is incremented in the
+                                                                       do..while statement*/
     vqueue_insert(q, v);
     while (!vqueue_is_empty(q)) {
         v = vqueue_remove(q);
@@ -290,8 +290,8 @@ static cmph_uint8 bmz_traverse_critical_nodes_heuristic(bmz_config_data_t *bmz, 
     DEBUGP("Labelling critical vertices\n");
     bmz->g[v] = (cmph_uint32)ceil((double)(*biggest_edge_value) / 2) - 1;
     SETBIT(visited, v);
-    next_g = (cmph_uint32)floor(
-        (double)(*biggest_edge_value / 2)); /* next_g is incremented in the do..while statement*/
+    next_g = (cmph_uint32)floor((double)(*biggest_edge_value / 2)); /* next_g is incremented in the
+                                                                       do..while statement*/
     vqueue_insert(q, v);
     while (!vqueue_is_empty(q)) {
         v = vqueue_remove(q);
@@ -323,8 +323,8 @@ static cmph_uint8 bmz_traverse_critical_nodes_heuristic(bmz_config_data_t *bmz, 
                             }
                         }
                     }
-                    if (collision &&
-                        (next_g > *biggest_g_value)) // saving the current g value stored in next_g.
+                    if (collision && (next_g > *biggest_g_value)) // saving the current g value
+                                                                  // stored in next_g.
                     {
                         if (nunused_g_values == unused_g_values_capacity) {
                             unused_g_values = (cmph_uint32 *)realloc(
@@ -383,10 +383,10 @@ static void bmz_traverse(bmz_config_data_t *bmz, cmph_uint8 *used_edges, cmph_ui
     while ((neighbor = graph_next_neighbor(bmz->graph, &it)) != GRAPH_NO_NEIGHBOR) {
         if (GETBIT(visited, neighbor))
             continue;
-        //DEBUGP("Visiting neighbor %u\n", neighbor);
+        // DEBUGP("Visiting neighbor %u\n", neighbor);
         *unused_edge_index = next_unused_edge(bmz, used_edges, *unused_edge_index);
         bmz->g[neighbor] = *unused_edge_index - bmz->g[v];
-        //if (bmz->g[neighbor] >= bmz->m) bmz->g[neighbor] += bmz->m;
+        // if (bmz->g[neighbor] >= bmz->m) bmz->g[neighbor] += bmz->m;
         SETBIT(visited, neighbor);
         (*unused_edge_index)++;
         bmz_traverse(bmz, used_edges, neighbor, unused_edge_index, visited);
@@ -461,7 +461,7 @@ int bmz_dump(cmph_t *mphf, FILE *fd)
 {
     char *buf = NULL;
     cmph_uint32 buflen;
-    cmph_uint32 two = 2; //number of hash functions
+    cmph_uint32 two = 2; // number of hash functions
     bmz_data_t *data = (bmz_data_t *)mphf->data;
     register size_t nbytes;
     (void)nbytes;
@@ -560,9 +560,11 @@ void bmz_destroy(cmph_t *mphf)
 }
 
 /** \fn void bmz_pack(cmph_t *mphf, void *packed_mphf);
- *  \brief Support the ability to pack a perfect hash function into a preallocated contiguous memory space pointed by packed_mphf.
+ *  \brief Support the ability to pack a perfect hash function into a preallocated contiguous memory
+ * space pointed by packed_mphf.
  *  \param mphf pointer to the resulting mphf
- *  \param packed_mphf pointer to the contiguous memory area used to store the resulting mphf. The size of packed_mphf must be at least cmph_packed_size()
+ *  \param packed_mphf pointer to the contiguous memory area used to store the resulting mphf. The
+ * size of packed_mphf must be at least cmph_packed_size()
  */
 void bmz_pack(cmph_t *mphf, void *packed_mphf)
 {
