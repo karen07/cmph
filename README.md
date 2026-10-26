@@ -1,14 +1,12 @@
 # CMPH
 
-This repository contains CMPH 2.0.2 with CMake build support and a test harness for minimal perfect hashing.
-
-The upstream CMPH sources live in `cmph-2.0.2/`. The top-level `cmph-test` program downloads a newline-separated key set from a URL, builds a BDZ minimal perfect hash, verifies the input keys, and combines the hash with a 32-bit fingerprint table for non-key probes.
-
-The repository is a maintained build and test wrapper around CMPH rather than a new minimal-perfect-hashing implementation. It provides a repeatable way to build the library, exercise it with a URL-backed key set, and measure random non-key probes.
+CMPH 2.0.2 with CMake build support and a test harness for minimal perfect hashing. The
+harness builds and checks a BDZ hash over a downloaded set of keys.
 
 ## Описание
 
-Этот репозиторий содержит CMPH 2.0.2 с поддержкой сборки через CMake и тестовым стендом для минимального совершенного хеширования.
+CMPH 2.0.2 с поддержкой сборки через CMake и тестовым стендом для минимального совершенного
+хеширования. Стенд строит и проверяет BDZ-хеш на скачанном наборе ключей.
 
 Исходный код CMPH находится в `cmph-2.0.2/`. Верхнеуровневая программа `cmph-test` загружает по URL набор ключей по одному на строку, строит минимальную совершенную хеш-функцию BDZ, проверяет входные ключи и дополняет хеш 32-битной таблицей отпечатков для запросов по ключам, которых нет в исходном наборе.
 
@@ -47,7 +45,7 @@ build/release/cmph-test
 
 `--rand M` задает объем случайных probes, используемых для оценки false-positive rate fingerprint-слоя.
 
-## Структура
+## Структура проекта
 
 - `cmph-2.0.2/` - исходники CMPH 2.0.2 с CMake build;
 - `src/cmph_test.c` - отдельный test harness;
